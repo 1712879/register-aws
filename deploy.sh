@@ -1,5 +1,4 @@
 #!/bin/bash
-cd ./register-aws
 ls
 MY_IP=`curl ifconfig.me`
 echo $MY_IP
