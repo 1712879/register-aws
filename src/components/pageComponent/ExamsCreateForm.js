@@ -16,9 +16,38 @@ import {
 import { useFormik } from 'formik';
 import Loader from 'react-loader-spinner';
 import {useHistory} from "react-router-dom";
+import Tables from 'src/components/common/Tables';
+import swal from 'sweetalert2';
+
 const HocKyEnum = [
   {label: "HK I", value: 1},
   {label: "HK II", value: 2},
+]
+const MonHocEnum = [
+  {
+    id: 1,
+    name: "Lập trình mobile",
+    stc: 4,
+    trangThai: 'Mở'
+  },
+  {
+    id: 2,
+    name: "Lập trình website",
+    stc: 4,
+    trangThai: 'Mở'
+  },
+  {
+    id: 3,
+    name: "Machine Learning",
+    stc: 4,
+    trangThai: 'Mở'
+  },
+  {
+    id: 4,
+    name: "Nhập môn lập trình",
+    stc: 4,
+    trangThai: 'Mở'
+  },
 ]
 const CreateForm = ({
   isUpdatePage,
@@ -33,6 +62,40 @@ const CreateForm = ({
     },
     enableReinitialize: true
   });
+
+  const handleSelectMonHoc = (monHocId) => {
+    let monHoc = MonHocEnum.find(e => e.id == monHocId);
+    if (monHoc) {
+      let listMonHoc = formik.values.monHoc;
+      listMonHoc.push(monHoc)
+      let total = formik.values.total;
+      total += monHoc.stc;
+      formik.setFieldValue('monHoc', listMonHoc)
+      formik.setFieldValue('total', total)
+    }
+  }
+
+  const handleDeleteMonHoc = (monHocId) => {
+    let monHoc = formik.values.monHoc.find(e => e.id == monHocId);
+    console.log({ monHoc })
+    if (monHoc) {
+      let listMonHoc = formik.values.monHoc.filter(e => e.id != monHocId)
+      console.log(listMonHoc)
+      let total = formik.values.total;
+      total -= monHoc.stc;
+      formik.setFieldValue('monHoc', listMonHoc)
+      formik.setFieldValue('total', total)
+    } else {
+      swal
+        .fire({
+          title: '',
+          text: 'Không thể xóa môn học chưa đăng ký',
+          icon: 'error',
+          showCancelButton: true,
+        })
+    }
+  }
+  
   return (
     <form autoComplete="off" noValidate onSubmit={formik.handleSubmit}>
       <Card>
@@ -109,6 +172,8 @@ const CreateForm = ({
           </Button>
         </Box>
       </Card>
+      <Tables data={MonHocEnum} handleSelectMonHoc={handleSelectMonHoc}
+        handleDeleteMonHoc={handleDeleteMonHoc} listMonHoc={formik.values.monHoc} />
     </form>
   );
 };

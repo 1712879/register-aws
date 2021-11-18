@@ -7,32 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { create } from 'src/store/actions/examAction';
 import Tables from 'src/components/common/Tables';
 import swal from 'sweetalert2';
-const MonHocEnum = [
-  {
-    id: 1,
-    name: "Lập trình mobile",
-    stc: 4,
-    trangThai: 'Mở'
-  },
-  {
-    id: 2,
-    name: "Lập trình website",
-    stc: 4,
-    trangThai: 'Mở'
-  },
-  {
-    id: 3,
-    name: "Machine Learning",
-    stc: 4,
-    trangThai: 'Mở'
-  },
-  {
-    id: 4,
-    name: "Nhập môn lập trình",
-    stc: 4,
-    trangThai: 'Mở'
-  },
-]
+
 const PageCreate = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -68,48 +43,6 @@ const PageCreate = () => {
       })
   };
 
-  const handleSelectMonHoc = (monHocId) => {
-    let monHoc = MonHocEnum.find(e => e.id == monHocId);
-    if(monHoc){
-      setValues(o => {
-        let listMonHoc = values.monHoc;
-        listMonHoc.push(monHoc)
-        let total = values.total;
-        total += monHoc.stc;
-        return {
-          ...o,
-          monHoc: listMonHoc,
-          total
-        }
-      })
-    }
-  }
-
-  const handleDeleteMonHoc = (monHocId) => {
-    let monHoc = values.monHoc.find(e => e.id == monHocId);
-    console.log({ monHoc})
-    if (monHoc) {
-      setValues(o => {
-        let listMonHoc = values.monHoc.filter(e => e.id != monHocId)
-        console.log(listMonHoc)
-        let total = values.total;
-        total -= monHoc.stc;
-        return {
-          ...o,
-          monHoc: listMonHoc,
-          total
-        }
-      })
-    }else{
-      swal
-        .fire({
-          title: '',
-          text: 'Không thể xóa môn học chưa đăng ký',
-          icon: 'error',
-          showCancelButton: true,
-        })
-    }
-  }
   
   return (
     <>
@@ -134,8 +67,7 @@ const PageCreate = () => {
                   initialValues={values}
                   handleSubmit={handleSubmit}
                 />
-                    <Tables data={MonHocEnum} handleSelectMonHoc={handleSelectMonHoc}
-                      handleDeleteMonHoc={handleDeleteMonHoc} listMonHoc={values.monHoc}/>
+                    
                 </>
               )}
             </Grid>
