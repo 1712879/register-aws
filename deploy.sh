@@ -12,6 +12,6 @@ then
 fi
 # DOCKER_BUILD=`sudo docker build --tag register-aws-image-1 .`
 DOCKER_PULL=`sudo docker pull 18110127/register-aws`
-DOCKER_RUN=`sudo docker run -it -d --name register-aws -e PORT=80 --restart=always -p 80:80 18110127/register-aws`
+DOCKER_RUN=`sudo docker run -it -d --name register-aws -e PORT=3000 --restart=always -p 3000:3000 18110127/register-aws`
 DOCKER_PRUNE=`sudo docker image prune -a --force`
 echo "Finish deploy container - [END]";
