@@ -111,11 +111,13 @@ router.get('/dkhp', utils.authorizerToken, async (req, res) => {
                 err: err
             })
         }
-        let expressAttName = '';
+        let expressAttName = {
+            '#keyId': 'keyId'
+        };
         let expressAttValue = {
             ':keyId': `${req.user.username}-`
         }
-        let filerExpress = 'contains (keyId, :keyId)'
+        let filerExpress = 'contains (#keyId, :keyId)'
         let promiseList = [
             utils.dynamoService.getAll("dkhp", expressAttName, expressAttValue, filerExpress),
             utils.dynamoService.getAll("mon-hoc")
