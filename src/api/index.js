@@ -2,6 +2,8 @@ import axios from 'axios';
 import { stringify, parse } from 'query-string';
 import store from '../store';
 // import './interceptor';
+const BASE_API = process.env.REACT_APP_BASE_API || '';
+
 const API = async ({
   url,
   params = '',
@@ -13,10 +15,10 @@ const API = async ({
 }) => {
   const newParams = parse(stringify(params, { arrayFormat: 'comma' }));
   try {
-    let updatedHeaders = { ...headers, authorization: localStorage.getItem("token") };
+    let updatedHeaders = { ...headers, Authorization: 'Bearer ' + localStorage.getItem("token") };
     const response = await axios({
       method,
-      url: `http://localhost:5000${url}`,
+      url: `${BASE_API}/api${url}`,
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
