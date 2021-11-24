@@ -14,10 +14,7 @@ const NavItem = ({
 }) => {
   const location = useLocation();
 
-  const active = href ? !!matchPath({
-    path: href,
-    end: false
-  }, location.pathname) : false;
+  const active = false
 
   return (
     <ListItem

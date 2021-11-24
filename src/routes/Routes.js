@@ -2,39 +2,11 @@ import React, { Fragment, Suspense } from 'react'
 import {Route, Switch} from 'react-router-dom'
 import { routesConfig } from './routesConfig';
 const CreatePage = React.lazy(() => import('../pages/PageCreate'));
+const LoginPage = React.lazy(() => import('../pages/Login'));
+const RegisterPage = React.lazy(() => import('../pages/Register'));
+const DashBoardPage = React.lazy(() => import('../pages/Dashboard'));
+import RoutesString from './routesString';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-const renderRoutes = (
-  routes
-) => {
-  return (
-    <Switch>
-      {routes &&
-        routes.map((route, idx) => {
-          const Layout = route.layout || Fragment
-          const Guard = route.guard || Fragment
-          const Component = route?.page || Fragment
-          return <Route
-            key={`routes-${idx}`}
-            path={route.path}
-            exact={route.exact}
-            render={(props) => (
-              <Guard>
-                <Layout>
-                  {route.routes && route.routes.length > 0 ? (
-                    renderRoutes(route.routes)
-                  ) : (
-                    <>
-                        <Component {...props} />
-                    </>
-                  )}
-                </Layout>
-              </Guard>
-            )}
-          />
-        })}
-    </Switch>
-  )
-}
 
 function Routes() {
   return (
@@ -42,8 +14,10 @@ function Routes() {
       render={({ location }) => (
         <Suspense fallback={<div />}>
           <Switch>
-            <Route exact={true} path="/" component={CreatePage} />
-            {renderRoutes(routesConfig)}
+            <Route exact={true} path={RoutesString.CreatePage} component={CreatePage} />
+            <Route exact={true} path={RoutesString.LOGIN} component={LoginPage} />
+            <Route exact={true} path={RoutesString.SIGN_UP} component={RegisterPage} />
+            <Route exact={true} path={RoutesString.DashboardLayout} component={DashBoardPage} />
             </Switch>
         </Suspense>
       )}

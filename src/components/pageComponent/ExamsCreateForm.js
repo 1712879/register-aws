@@ -18,6 +18,7 @@ import Loader from 'react-loader-spinner';
 import {useHistory} from "react-router-dom";
 import Tables from 'src/components/common/Tables';
 import swal from 'sweetalert2';
+import API from 'src/api';
 
 const HocKyEnum = [
   {label: "HK I", value: 1},
@@ -53,7 +54,7 @@ const CreateForm = ({
   isUpdatePage,
   initialValues,
   handleSubmit,
-  loading,}) => {
+  loading, MonHocArray}) => {
   const history = useHistory();
   const formik = useFormik({
     initialValues,
@@ -63,26 +64,23 @@ const CreateForm = ({
     enableReinitialize: true
   });
 
-  const handleSelectMonHoc = (monHocId) => {
-    let monHoc = MonHocEnum.find(e => e.id == monHocId);
-    if (monHoc) {
-      let listMonHoc = formik.values.monHoc;
-      listMonHoc.push(monHoc)
-      let total = formik.values.total;
-      total += monHoc.stc;
-      formik.setFieldValue('monHoc', listMonHoc)
-      formik.setFieldValue('total', total)
-    }
+  const handleSelectMonHoc = (monHocId, tinChi) => {
+    let listMonHoc = formik.values.monHoc;
+    listMonHoc.push(monHocId)
+    let total = formik.values.total;
+    total += Number(tinChi);
+    formik.setFieldValue('monHoc', listMonHoc)
+    formik.setFieldValue('total', total)
   }
 
-  const handleDeleteMonHoc = (monHocId) => {
-    let monHoc = formik.values.monHoc.find(e => e.id == monHocId);
+  const handleDeleteMonHoc = (monHocId, tinChi) => {
+    let monHoc = formik.values.monHoc.find(e => e == monHocId);
     console.log({ monHoc })
-    if (monHoc) {
-      let listMonHoc = formik.values.monHoc.filter(e => e.id != monHocId)
+    if(monHoc){
+      let listMonHoc = formik.values.monHoc.filter(e => e != monHocId)
       console.log(listMonHoc)
       let total = formik.values.total;
-      total -= monHoc.stc;
+      total -= Number(tinChi);
       formik.setFieldValue('monHoc', listMonHoc)
       formik.setFieldValue('total', total)
     } else {
@@ -148,8 +146,8 @@ const CreateForm = ({
                 variant="outlined"
               />
             </Grid>
-            
           </Grid>
+          
         </CardContent>
         <Divider />
         <Box
@@ -172,7 +170,7 @@ const CreateForm = ({
           </Button>
         </Box>
       </Card>
-      <Tables data={MonHocEnum} handleSelectMonHoc={handleSelectMonHoc}
+      <Tables data={MonHocArray} handleSelectMonHoc={handleSelectMonHoc}
         handleDeleteMonHoc={handleDeleteMonHoc} listMonHoc={formik.values.monHoc} />
     </form>
   );

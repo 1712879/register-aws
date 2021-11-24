@@ -26,9 +26,6 @@ import { useDispatch } from 'react-redux';
 const TableCustom = ({
   data = [],
   isLoading,
-  listMonHoc=[],
-  handleSelectMonHoc,
-  handleDeleteMonHoc,
   ...rest
 }) => {
   const [selectedfurnitureIds, setSelectedfurnitureIds] = useState([]);
@@ -57,8 +54,10 @@ const TableCustom = ({
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Môn học</TableCell>
+                  <TableCell>Mã Môn học</TableCell>
                   <TableCell>Số tín chỉ</TableCell>
+                  <TableCell>Học Kỳ</TableCell>
+                  <TableCell>Ngày tạo</TableCell>
                   <TableCell>Trạng thái</TableCell>
                   <TableCell>
                     <Settings size="20" />
@@ -72,7 +71,6 @@ const TableCustom = ({
                     data.slice(0, limit).map((element) => (
                     <TableRow
                       hover
-                        selected={!!listMonHoc.find(e => e == element.monHocId)}
                     >
                       <TableCell >
                         <Box
@@ -89,27 +87,10 @@ const TableCustom = ({
                       <TableCell>
                           {element?.tinChi}
                       </TableCell>
+                        <TableCell>{element?.hocKy}</TableCell>
+                        <TableCell>{element?.ngayTao}</TableCell>
                         <TableCell>{element?.trangThai}</TableCell>
-
-                        <TableCell>
-                          {!!listMonHoc.find(e => e == element.monHocId) ? "" : <Button
-                            sx={{ mx: 1 }}
-                            color="info"
-                            variant="contained"
-                            onClick={() => handleSelectMonHoc(element.monHocId, element?.tinChi)}
-                          >
-                            <CheckSquare size="20" />
-                          </Button>}
-
-                          <Button
-                            sx={{ mx: 1 }}
-                            color="error"
-                            variant="contained"
-                            onClick={() => handleDeleteMonHoc(element.monHocId, element?.tinChi)}
-                          >
-                            <Trash2 size="20" />
-                          </Button>
-                        </TableCell>
+                        <TableCell></TableCell>
                     </TableRow>
                   ))}
               </TableBody>

@@ -13,7 +13,7 @@ const API = async ({
 }) => {
   const newParams = parse(stringify(params, { arrayFormat: 'comma' }));
   try {
-    let updatedHeaders = { ...headers };
+    let updatedHeaders = { ...headers, authorization: localStorage.getItem("token") };
     const response = await axios({
       method,
       url: `http://localhost:5000${url}`,
@@ -27,7 +27,11 @@ const API = async ({
       data,
       cancelToken: cancelTokenSource?.token
     });
-
+    
+    if (response.data.code == 403){
+      window.location.href = '/login'
+      return;
+    }
     return response && response.data;
   } catch (error) {
     throw error;
