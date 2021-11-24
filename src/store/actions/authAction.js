@@ -28,7 +28,7 @@ export const login = createAsyncThunk('auth/post', async (values, thunk) => {
       icon: 'success'
     }).then((result) => {
       if (result.value) {
-        thunk.dispatch(push(RoutesString.CreatePage));
+        thunk.dispatch(push(RoutesString.DashboardLayout));
       }
     });
     return data;

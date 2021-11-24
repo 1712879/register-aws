@@ -58,12 +58,6 @@ const Dashboard = () => {
               title={'Lịch sử đăng ký'}
             />
             <Divider />
-            <CardContent>
-              <Grid container spacing={3}>
-
-              </Grid>
-            </CardContent>
-            <Divider />
             <Box
               sx={{
                 display: 'flex',

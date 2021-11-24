@@ -111,7 +111,8 @@ module.exports.validateEncodeData = async (payload, payloadCompared) => {
 const jwt = require("jsonwebtoken");
 
 module.exports.authorizerToken = (req, res, next) => {
-    let token = req.headers.authorization ? req.headers.authorization : null;
+    console.log(req.headers)
+    let token = req.headers.authorization ? req.headers.authorization.split(" ")[1] : null;
     if (!token) return res.json({
         code: 400,
         message: "Lỗi định danh",

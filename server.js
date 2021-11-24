@@ -8,8 +8,17 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 require('dotenv').config()
 app.use(express.static(path.join(__dirname, 'build')));
-app.use(require('./router'));
+app.use('/api/',require('./router'));
 app.get('/', function (req, res) {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+app.get('/login', function (req, res) {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+app.get('/sign-up', function (req, res) {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+app.get('/create', function (req, res) {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 const PORT = process.env.PORT_BE || 3000;
