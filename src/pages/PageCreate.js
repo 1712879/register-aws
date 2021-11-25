@@ -71,19 +71,39 @@ const PageCreate = () => {
 
   useEffect(async () => {
     try {
-      const response = await API({
-        url: '/mon-hoc',
-        method: 'GET'
-      });
-      console.log(response)
-      if (response.code != 200) {
-        throw new Error(response.message)
+      let promiseList = [
+        API({
+          url: '/mon-hoc',
+          method: 'GET'
+        }),
+        API({
+          url: '/dkhp',
+          method: 'GET'
+        })
+      ]
+      let [monHoc, dkhp] = await Promise.all(promiseList);
+      console.log(monHoc)
+      if (monHoc.code != 200) {
+        throw new Error(monHoc.message)
       }
-      setListMonHoc(response.data || [])
+      setListMonHoc(monHoc.data || [])
+      if(dkhp.code != 200){
+        throw new Error(dkhp.message)
+      }
+      let listMonHocDK = []
+      dkhp.data.forEach(e => {
+        if (e?.monHocId) listMonHocDK.push(e?.monHocId)
+      })
+      setValues(o => {
+        return {
+          ...o,
+          monHoc: listMonHocDK
+        }
+      })
     } catch (error) {
       Swal.fire({
         title: 'Message',
-        text: error.message,
+        text: error.message || 'Lỗi',
         icon: 'error'
       });
       return {
@@ -91,6 +111,31 @@ const PageCreate = () => {
       };
     }
   }, [])
+
+  const handleDeleteMonHoc = async (monHocId) => {
+    try {
+      let promiseList = [
+        API({
+          url: `/dkhp/:${monHocId}`,
+          method: 'DELETE'
+        })
+      ]
+      let [result] = await Promise.all(promiseList);
+      console.log(v)
+      if (result.code != 200) {
+        throw new Error(monHoc.message)
+      }
+    } catch (error) {
+      Swal.fire({
+        title: 'Message',
+        text: error.message || 'Lỗi',
+        icon: 'error'
+      });
+      return {
+        error: error
+      };
+    }
+  }
 
   const logOut = () => {
     localStorage.clear()
@@ -131,7 +176,8 @@ const PageCreate = () => {
                   isUpdatePage={isUpdatePage}
                   initialValues={values}
                   handleSubmit={handleSubmit}
-                      MonHocArray={listMonHoc}
+                  MonHocArray={listMonHoc}
+                  handleDeleteMonHoc={handleDeleteMonHoc}
                 />
                     
                 </>

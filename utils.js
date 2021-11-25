@@ -62,14 +62,15 @@ const postData = async (tableName, keyId, value, data) => {
 }
 
 
-const deleteData = async (tableName, keyId, value, data) => {
+const deleteData = async (tableName, keyId, value) => {
     try {
         const params = {
             TableName: tableName,
-            Item: {
+            Key: {
                 [keyId]: value,
             }
         };
+        console.log({ params})
         const result = await docClient.delete(params).promise();
         return result;
     } catch (e) {
@@ -111,7 +112,7 @@ module.exports.validateEncodeData = async (payload, payloadCompared) => {
 const jwt = require("jsonwebtoken");
 
 module.exports.authorizerToken = (req, res, next) => {
-    console.log(req.headers)
+    // console.log(req.headers)
     let token = req.headers.authorization ? req.headers.authorization.split(" ")[1] : null;
     if (!token) return res.json({
         code: 400,

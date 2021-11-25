@@ -73,7 +73,7 @@ const CreateForm = ({
     formik.setFieldValue('total', total)
   }
 
-  const handleDeleteMonHoc = (monHocId, tinChi) => {
+  const handleDeleteMonHoc = async (monHocId, tinChi) => {
     let monHoc = formik.values.monHoc.find(e => e == monHocId);
     console.log({ monHoc })
     if(monHoc){
@@ -83,6 +83,25 @@ const CreateForm = ({
       total -= Number(tinChi);
       formik.setFieldValue('monHoc', listMonHoc)
       formik.setFieldValue('total', total)
+      try {
+        let result = await API({
+          url: `/dkhp/${monHocId}`,
+          method: 'DELETE'
+        });
+        console.log(result)
+        if (result.code != 200) {
+          throw new Error(monHoc.message)
+        }
+      } catch (error) {
+        Swal.fire({
+          title: 'Message',
+          text: error.message || 'Lỗi',
+          icon: 'error'
+        });
+        return {
+          error: error
+        };
+      }
     } else {
       swal
         .fire({
